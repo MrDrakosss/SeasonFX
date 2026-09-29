@@ -71,19 +71,19 @@ export function themeFromAccent(accent: string): SeasonTheme {
 }
 
 function tokens(t: SeasonTheme): string {
-  return `  --season-primary: ${t.primary};
-  --season-secondary: ${t.secondary};
-  --season-on-primary: ${t.onPrimary};
-  --season-button-bg: ${t.buttonBackground};
-  --season-button-ring: ${t.buttonRing};
-  --season-glow: ${t.glow};
-  --season-ring: ${t.ring};
-  --season-surface: ${t.surface};
-  --season-on-surface: ${t.onSurface};
-  --season-border: ${t.border};
-  --season-gradient: ${t.gradient};
-  --season-radius: ${t.radius ?? '10px'};
-  --season-pattern: ${t.pattern ?? 'none'};`;
+  return `  --seasonfx-primary: ${t.primary};
+  --seasonfx-secondary: ${t.secondary};
+  --seasonfx-on-primary: ${t.onPrimary};
+  --seasonfx-button-bg: ${t.buttonBackground};
+  --seasonfx-button-ring: ${t.buttonRing};
+  --seasonfx-glow: ${t.glow};
+  --seasonfx-ring: ${t.ring};
+  --seasonfx-surface: ${t.surface};
+  --seasonfx-on-surface: ${t.onSurface};
+  --seasonfx-border: ${t.border};
+  --seasonfx-gradient: ${t.gradient};
+  --seasonfx-radius: ${t.radius ?? '10px'};
+  --seasonfx-pattern: ${t.pattern ?? 'none'};`;
 }
 
 const safeId = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, '');
@@ -92,8 +92,8 @@ const safeId = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, '');
  * Generates the theme stylesheet of a season.
  *
  * @remarks
- * Every rule is scoped to `html[data-season-theme="<id>"]`, so nothing applies
- * unless that attribute is present. Elements with `data-season-ignore` (and
+ * Every rule is scoped to `html[data-seasonfx-theme="<id>"]`, so nothing applies
+ * unless that attribute is present. Elements with `data-seasonfx-ignore` (and
  * everything inside them) are never styled. The theme changes colors, backgrounds, borders colors, shadows,
  * radius and transitions only; it never changes sizes, spacing, fonts or display,
  * so the page layout stays the same.
@@ -104,10 +104,10 @@ const safeId = (id: string) => id.replace(/[^a-zA-Z0-9_-]/g, '');
  */
 export function buildThemeCss(season: SeasonDefinition, options: ResolvedThemeOptions): string {
   const t = season.theme ?? themeFromAccent(season.accent ?? '#6366f1');
-  const S = `html[data-season-theme="${safeId(season.id)}"]`;
-  const not = ':not([data-season-ignore], [data-season-ignore] *)';
-  const skin = [`${S} .season-btn${not}`];
-  if (options.buttons) skin.push(`${S} :is(${options.buttons})${not}:not(.season-btn-soft):not(.season-btn-outline)`);
+  const S = `html[data-seasonfx-theme="${safeId(season.id)}"]`;
+  const not = ':not([data-seasonfx-ignore], [data-seasonfx-ignore] *)';
+  const skin = [`${S} .seasonfx-btn${not}`];
+  if (options.buttons) skin.push(`${S} :is(${options.buttons})${not}:not(.seasonfx-btn-soft):not(.seasonfx-btn-outline)`);
   const B = skin.join(',\n');
   const each = (suffix: string) => skin.map((s) => `${s}${suffix}`).join(',\n');
 
@@ -133,11 +133,11 @@ ${tokens(dark)}
   }
 
   rules.push(`${B} {
-  background: var(--season-button-bg);
-  color: var(--season-on-primary);
+  background: var(--seasonfx-button-bg);
+  color: var(--seasonfx-on-primary);
   border-color: transparent;
-  border-radius: var(--season-radius);
-  box-shadow: inset 0 0 0 1px var(--season-button-ring), 0 1px 2px rgba(15, 23, 42, 0.18), 0 6px 16px -8px var(--season-glow);
+  border-radius: var(--seasonfx-radius);
+  box-shadow: inset 0 0 0 1px var(--seasonfx-button-ring), 0 1px 2px rgba(15, 23, 42, 0.18), 0 6px 16px -8px var(--seasonfx-glow);
   text-shadow: none;
   transition: transform 150ms ease, box-shadow 200ms ease, filter 200ms ease, background-position 600ms ease;
   ${t.buttonExtra ?? ''}
@@ -145,7 +145,7 @@ ${tokens(dark)}
 ${each(':not(:disabled):hover')} {
   transform: translateY(-1px);
   filter: brightness(1.06) saturate(1.08);
-  box-shadow: inset 0 0 0 1px var(--season-button-ring), 0 2px 4px rgba(15, 23, 42, 0.18), 0 12px 26px -8px var(--season-glow);
+  box-shadow: inset 0 0 0 1px var(--seasonfx-button-ring), 0 2px 4px rgba(15, 23, 42, 0.18), 0 12px 26px -8px var(--seasonfx-glow);
   ${t.buttonHoverExtra ?? ''}
 }
 ${each(':not(:disabled):active')} {
@@ -153,7 +153,7 @@ ${each(':not(:disabled):active')} {
   filter: brightness(0.97);
 }
 ${each(':focus-visible')} {
-  outline: 2px solid var(--season-ring);
+  outline: 2px solid var(--seasonfx-ring);
   outline-offset: 2px;
 }
 ${each(':disabled')} {
@@ -163,109 +163,109 @@ ${each(':disabled')} {
   filter: grayscale(0.35);
 }`);
 
-  rules.push(`${S} .season-btn-soft${not} {
-  background: color-mix(in srgb, var(--season-primary) 14%, transparent);
-  color: var(--season-primary);
+  rules.push(`${S} .seasonfx-btn-soft${not} {
+  background: color-mix(in srgb, var(--seasonfx-primary) 14%, transparent);
+  color: var(--seasonfx-primary);
   border-color: transparent;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--season-primary) 30%, transparent);
-  border-radius: var(--season-radius);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--seasonfx-primary) 30%, transparent);
+  border-radius: var(--seasonfx-radius);
   transition: background-color 150ms ease, box-shadow 150ms ease;
 }
-${S} .season-btn-soft${not}:hover {
-  background: color-mix(in srgb, var(--season-primary) 22%, transparent);
+${S} .seasonfx-btn-soft${not}:hover {
+  background: color-mix(in srgb, var(--seasonfx-primary) 22%, transparent);
 }
-${S} .season-btn-outline${not} {
+${S} .seasonfx-btn-outline${not} {
   background: transparent;
-  color: var(--season-primary);
-  border-color: var(--season-primary);
-  border-radius: var(--season-radius);
-  box-shadow: 0 0 0 1px var(--season-primary);
+  color: var(--seasonfx-primary);
+  border-color: var(--seasonfx-primary);
+  border-radius: var(--seasonfx-radius);
+  box-shadow: 0 0 0 1px var(--seasonfx-primary);
   transition: background-color 150ms ease, color 150ms ease;
 }
-${S} .season-btn-outline${not}:hover {
-  background: var(--season-primary);
-  color: var(--season-on-primary);
+${S} .seasonfx-btn-outline${not}:hover {
+  background: var(--seasonfx-primary);
+  color: var(--seasonfx-on-primary);
 }
-${S} .season-card${not} {
-  border-color: var(--season-border);
-  box-shadow: inset 0 3px 0 0 var(--season-primary), 0 0 0 1px var(--season-border), 0 14px 34px -16px var(--season-glow);
+${S} .seasonfx-card${not} {
+  border-color: var(--seasonfx-border);
+  box-shadow: inset 0 3px 0 0 var(--seasonfx-primary), 0 0 0 1px var(--seasonfx-border), 0 14px 34px -16px var(--seasonfx-glow);
 }
-${S} .season-surface${not} {
-  background-color: var(--season-surface);
-  color: var(--season-on-surface);
+${S} .seasonfx-surface${not} {
+  background-color: var(--seasonfx-surface);
+  color: var(--seasonfx-on-surface);
 }
-${S} .season-badge${not} {
-  background: color-mix(in srgb, var(--season-primary) 14%, transparent);
-  color: var(--season-primary);
+${S} .seasonfx-badge${not} {
+  background: color-mix(in srgb, var(--seasonfx-primary) 14%, transparent);
+  color: var(--seasonfx-primary);
   border-color: transparent;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--season-primary) 35%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--seasonfx-primary) 35%, transparent);
   border-radius: 999px;
 }
-${S} .season-text${not} {
-  background-image: var(--season-gradient);
+${S} .seasonfx-text${not} {
+  background-image: var(--seasonfx-gradient);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
   -webkit-text-fill-color: transparent;
 }
-${S} .season-banner${not} {
-  background-image: var(--season-pattern), var(--season-gradient);
+${S} .seasonfx-banner${not} {
+  background-image: var(--seasonfx-pattern), var(--seasonfx-gradient);
   color: #ffffff;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 }
-${S} .season-ring${not} {
-  box-shadow: 0 0 0 2px var(--season-ring), 0 0 22px -4px var(--season-glow);
+${S} .seasonfx-ring${not} {
+  box-shadow: 0 0 0 2px var(--seasonfx-ring), 0 0 22px -4px var(--seasonfx-glow);
 }
-${S} .season-divider${not} {
-  border-color: var(--season-primary);
-  border-image: var(--season-gradient) 1;
+${S} .seasonfx-divider${not} {
+  border-color: var(--seasonfx-primary);
+  border-image: var(--seasonfx-gradient) 1;
 }
-${S} .season-accent${not} {
-  color: var(--season-primary);
+${S} .seasonfx-accent${not} {
+  color: var(--seasonfx-primary);
 }
-${S} .season-hide {
+${S} .seasonfx-hide {
   display: none !important;
 }`);
 
   if (options.background) {
     rules.push(`${S} body {
-  background-image: var(--season-pattern);
+  background-image: var(--seasonfx-pattern);
   background-attachment: fixed;
 }`);
   }
 
   if (options.links) {
     rules.push(`${S} a[href]${not} {
-  text-decoration-color: var(--season-primary);
+  text-decoration-color: var(--seasonfx-primary);
   text-underline-offset: 0.2em;
 }
 ${S} a[href]${not}:hover {
-  text-decoration-color: var(--season-secondary);
+  text-decoration-color: var(--seasonfx-secondary);
 }`);
   }
 
   if (options.forms) {
     rules.push(`${S} :is(input, textarea, select, progress, meter)${not} {
-  accent-color: var(--season-primary);
+  accent-color: var(--seasonfx-primary);
 }
 ${S} :is(input, textarea)${not} {
-  caret-color: var(--season-primary);
+  caret-color: var(--seasonfx-primary);
 }
 ${S} :is(input, textarea, select)${not}:focus-visible {
-  outline: 2px solid var(--season-ring);
+  outline: 2px solid var(--seasonfx-ring);
   outline-offset: 1px;
 }`);
   }
 
   if (options.selection) {
     rules.push(`${S} ::selection {
-  background: color-mix(in srgb, var(--season-primary) 28%, transparent);
+  background: color-mix(in srgb, var(--seasonfx-primary) 28%, transparent);
 }`);
   }
 
   if (options.scrollbar) {
     rules.push(`${S} {
-  scrollbar-color: var(--season-primary) transparent;
+  scrollbar-color: var(--seasonfx-primary) transparent;
 }`);
   }
 

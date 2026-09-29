@@ -359,7 +359,7 @@ export class ParticleEngine {
     const ctx = canvas.getContext('2d');
     if (!ctx) return false;
     canvas.setAttribute('aria-hidden', 'true');
-    canvas.setAttribute('data-season-ui-canvas', '');
+    canvas.setAttribute('data-seasonfx-canvas', '');
     canvas.style.cssText = [
       'position:fixed',
       'top:0',

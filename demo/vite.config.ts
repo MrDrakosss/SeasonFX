@@ -9,8 +9,8 @@ export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: [
-      { find: /^season-ui\/global$/, replacement: src('global.ts') },
-      { find: /^season-ui$/, replacement: src('index.ts') },
+      { find: /^seasonfx\/global$/, replacement: src('global.ts') },
+      { find: /^seasonfx$/, replacement: src('index.ts') },
     ],
   },
 });

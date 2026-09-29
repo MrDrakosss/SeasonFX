@@ -67,7 +67,7 @@ export const QueueBurstContext = createContext<(element: Element) => void>(() =>
  *   const { enabled, setEnabled, season } = useSeason();
  *   return (
  *     <label>
- *       <Switch checked={enabled} onChange={(e) => setEnabled(e.target.checked)} data-season-ignore />
+ *       <Switch checked={enabled} onChange={(e) => setEnabled(e.target.checked)} data-seasonfx-ignore />
  *       Holiday effects {season && `(now: ${season.name})`}
  *     </label>
  *   );
@@ -84,7 +84,7 @@ export const QueueBurstContext = createContext<(element: Element) => void>(() =>
 export function useSeason(): SeasonContextValue {
   const ctx = useContext(SeasonContext);
   if (!ctx) {
-    throw new Error('season-ui: useSeason() and the season-ui components must be used inside <SeasonProvider>.');
+    throw new Error('seasonfx: useSeason() and the seasonfx components must be used inside <SeasonProvider>.');
   }
   return ctx;
 }

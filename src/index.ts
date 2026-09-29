@@ -1,10 +1,10 @@
 /**
- * SeasonUI: non-invasive, opt-in seasonal (holiday) effects and themes for React sites.
+ * SeasonFX: non-invasive, opt-in seasonal (holiday) effects and themes for React sites.
  *
  * @remarks
  * Minimal integration:
  * ```tsx
- * import { SeasonProvider, SeasonSettings } from 'season-ui';
+ * import { SeasonProvider, SeasonSettings } from 'seasonfx';
  *
  * <SeasonProvider defaultEnabled={false} features={{ ambient: true, theme: true }}>
  *   <App />            // existing buttons stay untouched

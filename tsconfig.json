@@ -12,7 +12,7 @@
     "esModuleInterop": true,
     "isolatedModules": true,
     "types": [],
-    "paths": { "season-ui": ["./src/index.ts"], "season-ui/global": ["./src/global.ts"] }
+    "paths": { "seasonfx": ["./src/index.ts"], "seasonfx/global": ["./src/global.ts"] }
   },
   "include": ["src", "demo"],
   "exclude": ["demo/vite.config.ts"]

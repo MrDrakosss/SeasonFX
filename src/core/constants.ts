@@ -11,7 +11,7 @@ export const DEFAULT_SELECTOR =
  * The default `localStorage` key prefix. The master switch is saved under
  * `<prefix>:enabled`, the preferences under `<prefix>:preferences`.
  */
-export const DEFAULT_STORAGE_KEY = 'season-ui';
+export const DEFAULT_STORAGE_KEY = 'seasonfx';
 
 /** The default user preferences: normal intensity, every feature allowed. */
 export const DEFAULT_PREFERENCES: Readonly<SeasonPreferences> = {

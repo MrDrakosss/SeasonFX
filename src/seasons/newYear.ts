@@ -109,12 +109,12 @@ export const newYear: SeasonDefinition = {
     buttonExtra:
       'background-size: 250% 100%, 100% 100%; background-position: 100% 0, 0 0; background-repeat: no-repeat; text-shadow: 0 1px 0 rgba(255, 255, 255, 0.45);',
     css: `
-@keyframes season-ui-shimmer {
+@keyframes seasonfx-shimmer {
   from { background-position: 100% 0, 0 0; }
   to { background-position: 0% 0, 0 0; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  {button}:not(:disabled):hover { animation: season-ui-shimmer 1.6s ease-in-out infinite; }
+  {button}:not(:disabled):hover { animation: seasonfx-shimmer 1.6s ease-in-out infinite; }
 }`,
   },
 };

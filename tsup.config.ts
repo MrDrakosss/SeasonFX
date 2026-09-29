@@ -13,10 +13,10 @@ export default defineConfig([
     banner: { js: '"use client";' },
   },
   {
-    // Script-tag build for sites without React: window.SeasonUI
-    entry: { 'season-ui.global': 'src/global.ts' },
+    // Script-tag build for sites without React: window.SeasonFX
+    entry: { 'seasonfx.global': 'src/global.ts' },
     format: ['iife'],
-    globalName: 'SeasonUI',
+    globalName: 'SeasonFX',
     minify: true,
     sourcemap: true,
     target: 'es2017',

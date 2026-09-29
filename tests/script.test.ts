@@ -37,25 +37,25 @@ describe('getSeasonScript', () => {
 
   it('applies the season theme before paint when enabled', () => {
     const env = run(getSeasonScript({ defaultEnabled: true, date: christmasEve, features: { theme: true } }));
-    expect(env.attrs['data-season-theme']).toBe('christmas');
-    expect(env.styles[0]).toContain('html[data-season-theme="christmas"]');
+    expect(env.attrs['data-seasonfx-theme']).toBe('christmas');
+    expect(env.styles[0]).toContain('html[data-seasonfx-theme="christmas"]');
   });
 
   it('respects the stored master switch and theme preference', () => {
     const script = getSeasonScript({ defaultEnabled: true, date: christmasEve, features: { theme: true } });
-    expect(run(script, { 'season-ui:enabled': '0' }).styles).toHaveLength(0);
-    expect(run(script, { 'season-ui:preferences': '{"theme":false}' }).styles).toHaveLength(0);
-    expect(run(script, { 'season-ui:enabled': '1' }).styles).toHaveLength(1);
+    expect(run(script, { 'seasonfx:enabled': '0' }).styles).toHaveLength(0);
+    expect(run(script, { 'seasonfx:preferences': '{"theme":false}' }).styles).toHaveLength(0);
+    expect(run(script, { 'seasonfx:enabled': '1' }).styles).toHaveLength(1);
   });
 
   it('uses the controlled value over storage', () => {
     const script = getSeasonScript({ enabled: false, date: christmasEve, features: { theme: true } });
-    expect(run(script, { 'season-ui:enabled': '1' }).styles).toHaveLength(0);
+    expect(run(script, { 'seasonfx:enabled': '1' }).styles).toHaveLength(0);
   });
 
   it('evaluates Easter rules and returns nothing out of season', () => {
     const easterDay = new Date(2026, 3, 5);
-    expect(run(getSeasonScript({ defaultEnabled: true, date: easterDay, features: { theme: true } })).attrs['data-season-theme']).toBe('easter');
+    expect(run(getSeasonScript({ defaultEnabled: true, date: easterDay, features: { theme: true } })).attrs['data-seasonfx-theme']).toBe('easter');
     const september = new Date(2026, 8, 29);
     expect(run(getSeasonScript({ defaultEnabled: true, date: september, features: { theme: true } })).styles).toHaveLength(0);
   });

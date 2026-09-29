@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent, ReactNode } from 'react';
-import { SeasonButton, SeasonIcon, SeasonSettings, useSeason } from 'season-ui';
+import { SeasonButton, SeasonIcon, SeasonSettings, useSeason } from 'seasonfx';
 import { HeroArt, Loaf, Wheat } from './art';
 import { money, products, specialFor } from './data';
 import type { Product } from './data';
@@ -24,7 +24,7 @@ function Modal(props: { title: string; open: boolean; onClose: () => void; child
       <div className="modal" role="dialog" aria-modal="true" aria-label={title} onClick={(e) => e.stopPropagation()}>
         <div className="modal-head">
           <h2>{title}</h2>
-          <button className="icon-btn" aria-label="Close" onClick={onClose} data-season-ignore>
+          <button className="icon-btn" aria-label="Close" onClick={onClose} data-seasonfx-ignore>
             <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
               <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
@@ -42,19 +42,19 @@ function AnnouncementBar() {
     running.theme && season
       ? `${season.name} specials are here. Pre-order online and skip the queue.`
       : 'Fresh bread every morning from 6:00. Free delivery on orders over $30.';
-  return <div className="announcement season-banner">{text}</div>;
+  return <div className="announcement seasonfx-banner">{text}</div>;
 }
 
 function Header(props: { basketCount: number; onBasket: () => void; onSettings: () => void }) {
   return (
-    <header className="header" data-season-decor="edge">
+    <header className="header" data-seasonfx-decor="edge">
       <div className="container header-inner">
-        <a href="#top" className="logo" data-season-decor="hat">
+        <a href="#top" className="logo" data-seasonfx-decor="hat">
           <span className="logo-mark">
             <Wheat size={34} />
           </span>
           <span>
-            Crumb <span className="season-accent">&amp;</span> Crust
+            Crumb <span className="seasonfx-accent">&amp;</span> Crust
           </span>
         </a>
         <nav className="nav-links">
@@ -67,7 +67,7 @@ function Header(props: { basketCount: number; onBasket: () => void; onSettings: 
           <span className="hide-sm header-toggle">
             <SeasonButton hideWhenInactive aria-label="Holiday effects" title="Holiday effects" />
           </span>
-          <button className="btn btn-ghost season-btn-outline" onClick={props.onSettings} aria-label="Preferences">
+          <button className="btn btn-ghost seasonfx-btn-outline" onClick={props.onSettings} aria-label="Preferences">
             <svg className="gear" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
               <path
                 d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zm7.4-2.5a7.6 7.6 0 0 0 0-2l2-1.6-2-3.4-2.4 1a7.4 7.4 0 0 0-1.7-1l-.4-2.5h-4l-.4 2.5a7.4 7.4 0 0 0-1.7 1l-2.4-1-2 3.4 2 1.6a7.6 7.6 0 0 0 0 2l-2 1.6 2 3.4 2.4-1c.5.4 1.1.7 1.7 1l.4 2.5h4l.4-2.5c.6-.3 1.2-.6 1.7-1l2.4 1 2-3.4-2-1.6z"
@@ -105,19 +105,19 @@ function Hero() {
     <section className="hero" id="top">
       <div className="container hero-inner">
         <div className="hero-copy">
-          <span className="eyebrow season-badge">Family bakery since 1998</span>
+          <span className="eyebrow seasonfx-badge">Family bakery since 1998</span>
           <h1>
-            Honest bread, <span className="season-text">baked at dawn.</span>
+            Honest bread, <span className="seasonfx-text">baked at dawn.</span>
           </h1>
           <p className="lead">
             Slow-fermented sourdough, buttery pastries and seasonal bakes from a small neighborhood oven. No shortcuts,
             no additives, just flour, water, salt and time.
           </p>
           <div className="hero-actions">
-            <a href="#menu" className="btn btn-lg season-btn">
+            <a href="#menu" className="btn btn-lg seasonfx-btn">
               Order for pickup
             </a>
-            <a href="#story" className="btn btn-lg btn-ghost season-btn-outline">
+            <a href="#story" className="btn btn-lg btn-ghost seasonfx-btn-outline">
               Our story
             </a>
           </div>
@@ -145,12 +145,12 @@ function Hero() {
 function ProductCard(props: { product: Product; onAdd: (p: Product, el: Element) => void; decor?: string }) {
   const { product, onAdd, decor } = props;
   return (
-    <article className="product season-card" data-season-decor={decor}>
+    <article className="product seasonfx-card" data-seasonfx-decor={decor}>
       <div className="product-art">{product.art}</div>
       <div className="product-body">
         <div className="product-top">
           <h3>{product.name}</h3>
-          {product.tag && <span className="tag season-badge">{product.tag}</span>}
+          {product.tag && <span className="tag seasonfx-badge">{product.tag}</span>}
         </div>
         <p>{product.description}</p>
         <div className="product-foot">
@@ -200,14 +200,14 @@ function Specials(props: { onAdd: (p: Product, el: Element) => void }) {
         </div>
         <div className="special-grid">
           {special.items.map((p) => (
-            <div key={p.id} className="special season-card">
+            <div key={p.id} className="special seasonfx-card">
               <div className="special-art">{p.art}</div>
               <div>
                 <h3>{p.name}</h3>
                 <p className="muted">{p.description}</p>
                 <div className="product-foot">
                   <span className="price">{money(p.price)}</span>
-                  <button className="btn btn-sm btn-ghost season-btn-soft" onClick={(e) => props.onAdd(p, e.currentTarget)}>
+                  <button className="btn btn-sm btn-ghost seasonfx-btn-soft" onClick={(e) => props.onAdd(p, e.currentTarget)}>
                     Add
                   </button>
                 </div>
@@ -263,7 +263,7 @@ function Visit(props: { onToast: (text: string) => void }) {
   return (
     <section className="section section-soft" id="visit">
       <div className="container visit">
-        <div className="card season-card">
+        <div className="card seasonfx-card">
           <h3>Opening hours</h3>
           <dl className="hours">
             <div>
@@ -281,7 +281,7 @@ function Visit(props: { onToast: (text: string) => void }) {
           </dl>
           <p className="muted">12 Mill Street, Old Town. Two minutes from the market square.</p>
         </div>
-        <form className="card newsletter season-card" onSubmit={subscribe}>
+        <form className="card newsletter seasonfx-card" onSubmit={subscribe}>
           <h3>Warm news, once a month</h3>
           <p className="muted">New bakes, seasonal menus and the occasional recipe. No spam, ever.</p>
           <div className="newsletter-row">
@@ -309,7 +309,7 @@ function Footer() {
           </span>
           Crumb &amp; Crust
         </div>
-        <p className="muted">Made with flour, water, salt and time. This is a demo site for SeasonUI.</p>
+        <p className="muted">Made with flour, water, salt and time. This is a demo site for SeasonFX.</p>
       </div>
     </footer>
   );

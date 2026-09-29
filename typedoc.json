@@ -2,7 +2,7 @@
   "$schema": "https://typedoc.org/schema.json",
   "entryPoints": ["src/index.ts"],
   "out": "docs",
-  "name": "SeasonUI",
+  "name": "SeasonFX",
   "readme": "README.md",
   "excludePrivate": true,
   "excludeInternal": true,

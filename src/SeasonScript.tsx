@@ -15,7 +15,7 @@ export interface SeasonScriptProps extends SeasonScriptOptions {
  * Only needed with server rendering (Next.js, Remix, Gatsby, ...) and only when
  * the `theme` feature is on; it renders nothing otherwise. Pass the same options
  * as to `<SeasonProvider>` (share one config object). Because the script sets
- * `data-season-theme` on `<html>` before React hydrates, add
+ * `data-seasonfx-theme` on `<html>` before React hydrates, add
  * `suppressHydrationWarning` to your `<html>` element.
  *
  * @example Next.js App Router

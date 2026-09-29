@@ -1,6 +1,6 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { SeasonProvider } from 'season-ui';
+import { SeasonProvider } from 'seasonfx';
 import { Bakery } from './Bakery';
 import { DemoPanel } from './DemoPanel';
 

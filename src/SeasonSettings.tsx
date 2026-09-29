@@ -101,7 +101,7 @@ const css = {
  *
  * @remarks
  * Place it on the settings page. It only shows features enabled in the
- * Provider's `features` prop. The panel carries `data-season-ignore`, so it is
+ * Provider's `features` prop. The panel carries `data-seasonfx-ignore`, so it is
  * never themed and clicking it does not trigger effects.
  *
  * For a fully custom UI, build your own with {@link useSeason}
@@ -126,8 +126,8 @@ export function SeasonSettings(props: SeasonSettingsProps) {
     <div
       role="group"
       aria-label={labels.title}
-      data-season-ignore=""
-      data-season-settings=""
+      data-seasonfx-ignore=""
+      data-seasonfx-settings=""
       {...rest}
       style={unstyled ? style : { ...css.root, ...style }}
     >

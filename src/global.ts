@@ -1,12 +1,12 @@
 /**
- * Script-tag build: exposes `window.SeasonUI` for sites without React
+ * Script-tag build: exposes `window.SeasonFX` for sites without React
  * (plain HTML, WordPress, PHP templates, ...). It contains no React code.
  *
  * @example
  * ```html
- * <script src="season-ui.global.js"></script>
+ * <script src="seasonfx.global.js"></script>
  * <script>
- *   const season = SeasonUI.init({ defaultEnabled: false, features: { ambient: true, theme: true } });
+ *   const season = SeasonFX.init({ defaultEnabled: false, features: { ambient: true, theme: true } });
  *   season.bindToggle(document.getElementById('holiday-toggle'));
  * </script>
  * ```

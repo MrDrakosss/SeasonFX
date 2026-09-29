@@ -85,13 +85,13 @@ export const valentine: SeasonDefinition = {
     radius: '999px',
     pattern: `radial-gradient(1100px 520px at 50% -160px, rgba(236, 72, 153, 0.10), rgba(236, 72, 153, 0) 70%), ${pattern}`,
     css: `
-@keyframes season-ui-heartbeat {
+@keyframes seasonfx-heartbeat {
   0%, 100% { transform: translateY(-1px) scale(1); }
   30% { transform: translateY(-1px) scale(1.04); }
   60% { transform: translateY(-1px) scale(0.995); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  {button}:not(:disabled):hover { animation: season-ui-heartbeat 1.1s ease-in-out infinite; }
+  {button}:not(:disabled):hover { animation: seasonfx-heartbeat 1.1s ease-in-out infinite; }
 }`,
   },
 };

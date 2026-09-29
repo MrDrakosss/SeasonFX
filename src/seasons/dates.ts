@@ -15,7 +15,7 @@ export type RangeFunction = ((date: Date) => boolean) & { seasonRange: SeasonRan
 
 function parseMonthDay(value: string): number {
   const match = /^(\d{1,2})-(\d{1,2})$/.exec(value);
-  if (!match) throw new Error(`season-ui: invalid date "${value}", expected "MM-DD" (e.g. "12-24").`);
+  if (!match) throw new Error(`seasonfx: invalid date "${value}", expected "MM-DD" (e.g. "12-24").`);
   return Number(match[1]) * 100 + Number(match[2]);
 }
 

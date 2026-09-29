@@ -14,7 +14,7 @@ import { DEFAULT_PREFERENCES, DEFAULT_SELECTOR, DEFAULT_STORAGE_KEY, INTENSITY_S
 
 /**
  * Options of the season feature. Used by `<SeasonProvider>` (as props), by
- * `SeasonUI.init()` in the script-tag build, and by {@link SeasonController}.
+ * `SeasonFX.init()` in the script-tag build, and by {@link SeasonController}.
  */
 export interface SeasonOptions {
   /**
@@ -82,7 +82,7 @@ export interface SeasonOptions {
    * `localStorage` key prefix used in uncontrolled mode. `false` disables saving,
    * so the defaults apply on every page load.
    *
-   * @defaultValue `'season-ui'`
+   * @defaultValue `'seasonfx'`
    */
   storageKey?: string | false;
 
@@ -116,7 +116,7 @@ export interface SeasonOptions {
    * `DEFAULT_SELECTOR + ', a'` to include links.
    *
    * @remarks
-   * To exclude elements, add the `data-season-ignore` attribute
+   * To exclude elements, add the `data-seasonfx-ignore` attribute
    * (it also applies to all descendants).
    *
    * @defaultValue {@link DEFAULT_SELECTOR}
@@ -138,9 +138,9 @@ export interface SeasonOptions {
   zIndex?: number;
 
   /**
-   * When `true`, a `data-season="<id>"` attribute is set on `<html>` while the
+   * When `true`, a `data-seasonfx="<id>"` attribute is set on `<html>` while the
    * feature is active. It changes nothing visually by itself; it only lets you
-   * write your own seasonal CSS (e.g. `html[data-season="christmas"] .logo { ... }`).
+   * write your own seasonal CSS (e.g. `html[data-seasonfx="christmas"] .logo { ... }`).
    *
    * @defaultValue false
    */
@@ -243,7 +243,7 @@ function closestMatch(target: EventTarget | null, selector: string): Element | n
   } catch {
     return null; // invalid selector
   }
-  if (!match || match.closest('[data-season-ignore]')) return null;
+  if (!match || match.closest('[data-seasonfx-ignore]')) return null;
   return match;
 }
 
@@ -268,8 +268,8 @@ function celebrationConfig(season: SeasonDefinition): ParticleConfig {
 }
 
 /**
- * The framework-agnostic core of SeasonUI. `<SeasonProvider>` and the
- * script-tag build (`SeasonUI.init()`) are thin wrappers around it.
+ * The framework-agnostic core of SeasonFX. `<SeasonProvider>` and the
+ * script-tag build (`SeasonFX.init()`) are thin wrappers around it.
  *
  * @remarks
  * Lifecycle:
@@ -359,8 +359,8 @@ export class SeasonController {
     if (this.started || !isBrowser()) return;
     this.started = true;
     // Remove what the early <head> script (getSeasonScript) applied; the theme effect re-applies it synchronously.
-    document.querySelectorAll('style[data-season-ui-early]').forEach((el) => el.remove());
-    document.documentElement.removeAttribute('data-season-theme');
+    document.querySelectorAll('style[data-seasonfx-early]').forEach((el) => el.remove());
+    document.documentElement.removeAttribute('data-seasonfx-theme');
     if (!document.body) document.addEventListener('DOMContentLoaded', this.refresh, { once: true });
     this.refresh();
   };
@@ -451,7 +451,7 @@ export class SeasonController {
   /**
    * Makes a toggle out of any element: clicking it flips the master switch.
    * The element gets `role="switch"` (unless it is a checkbox), `aria-checked`,
-   * `data-season-enabled` and `data-season-ignore`, kept in sync with the state.
+   * `data-seasonfx-enabled` and `data-seasonfx-ignore`, kept in sync with the state.
    *
    * @param element - The element to bind (e.g. a button in the site's own style).
    * @returns A function that unbinds it.
@@ -464,14 +464,14 @@ export class SeasonController {
   bindToggle = (element: HTMLElement): (() => void) => {
     const isCheckbox = element instanceof HTMLInputElement && element.type === 'checkbox';
     if (!isCheckbox && !element.hasAttribute('role')) element.setAttribute('role', 'switch');
-    element.setAttribute('data-season-ignore', '');
+    element.setAttribute('data-seasonfx-ignore', '');
     const sync = () => {
       const { enabled, season } = this.state;
       if (isCheckbox) (element as HTMLInputElement).checked = enabled;
       else element.setAttribute('aria-checked', String(enabled));
-      element.setAttribute('data-season-enabled', String(enabled));
-      if (season) element.setAttribute('data-season', season.id);
-      else element.removeAttribute('data-season');
+      element.setAttribute('data-seasonfx-enabled', String(enabled));
+      if (season) element.setAttribute('data-seasonfx', season.id);
+      else element.removeAttribute('data-seasonfx');
     };
     const onClick = () => {
       const next = !this.state.enabled;
@@ -712,22 +712,22 @@ export class SeasonController {
     const css = themeOptions && season ? buildThemeCss(season, themeOptions) : null;
     this.effect('theme', css && season ? `${season.id}|${css}` : null, () => {
       const style = document.createElement('style');
-      style.setAttribute('data-season-ui-theme', season!.id);
+      style.setAttribute('data-seasonfx-style', season!.id);
       style.textContent = css;
       document.head.appendChild(style);
       const root = document.documentElement;
-      root.setAttribute('data-season-theme', season!.id);
+      root.setAttribute('data-seasonfx-theme', season!.id);
       return () => {
         style.remove();
-        root.removeAttribute('data-season-theme');
+        root.removeAttribute('data-seasonfx-theme');
       };
     });
 
-    // optional data-season attribute
+    // optional data-seasonfx attribute
     this.effect('expose', o.exposeAttribute && s.active && season ? season.id : null, () => {
       const root = document.documentElement;
-      root.setAttribute('data-season', season!.id);
-      return () => root.removeAttribute('data-season');
+      root.setAttribute('data-seasonfx', season!.id);
+      return () => root.removeAttribute('data-seasonfx');
     });
 
     // effects engine (canvas layer)
@@ -801,8 +801,8 @@ export class SeasonController {
     this.effect('decor', engine && hasBody && s.running.decorations && drawers ? `${gen}|${season!.id}` : null, () => {
       const scan = () => {
         const targets: DecorationTarget[] = [];
-        document.querySelectorAll('[data-season-decor]').forEach((element) => {
-          const value = (element.getAttribute('data-season-decor') || 'hat').toLowerCase();
+        document.querySelectorAll('[data-seasonfx-decor]').forEach((element) => {
+          const value = (element.getAttribute('data-seasonfx-decor') || 'hat').toLowerCase();
           for (const slot of value.split(/\s+/)) {
             const draw = SLOTS.includes(slot as DecorationSlot) ? drawers![slot as DecorationSlot] : undefined;
             if (draw) targets.push({ element, slot: slot as DecorationSlot, draw });
@@ -820,7 +820,7 @@ export class SeasonController {
         subtree: true,
         childList: true,
         attributes: true,
-        attributeFilter: ['data-season-decor'],
+        attributeFilter: ['data-seasonfx-decor'],
       });
       let frame = 0;
       const refreshDecor = () => {

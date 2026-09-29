@@ -246,7 +246,7 @@ export type DecorationDrawer = (ctx: CanvasRenderingContext2D, width: number, he
  * @remarks
  * Used only when the developer turns on the `theme` feature. Every color is a
  * CSS color. The tokens become CSS custom properties on
- * `html[data-season-theme="<id>"]`, e.g. `primary` becomes `--season-primary`.
+ * `html[data-seasonfx-theme="<id>"]`, e.g. `primary` becomes `--seasonfx-primary`.
  */
 export interface SeasonTheme {
   /** Main brand color of the season. */
@@ -263,13 +263,13 @@ export interface SeasonTheme {
   glow: string;
   /** Focus ring color. */
   ring: string;
-  /** Background of `.season-card` surfaces. */
+  /** Background of `.seasonfx-card` surfaces. */
   surface: string;
   /** Text color on `surface`. */
   onSurface: string;
   /** Border color of surfaces and badges. */
   border: string;
-  /** Gradient used by `.season-text` and `.season-banner`. */
+  /** Gradient used by `.seasonfx-text` and `.seasonfx-banner`. */
   gradient: string;
   /**
    * Corner radius of themed buttons.
@@ -321,7 +321,7 @@ export interface SeasonTheme {
  * ```
  */
 export interface SeasonDefinition {
-  /** Unique identifier (e.g. `'christmas'`). Used in `data-season` attributes. */
+  /** Unique identifier (e.g. `'christmas'`). Used in `data-seasonfx` attributes. */
   id: string;
   /** Human-readable name (e.g. `'Christmas'`). */
   name: string;
@@ -351,7 +351,7 @@ export interface SeasonDefinition {
   ambient?: AmbientConfig;
   /** Rare fly-by event, part of the hidden surprises. */
   flyby?: FlybyConfig;
-  /** Decorations attached to elements marked with `data-season-decor`. */
+  /** Decorations attached to elements marked with `data-seasonfx-decor`. */
   decorations?: Partial<Record<DecorationSlot, DecorationDrawer>>;
   /** Page theme tokens, used when the `theme` feature is on. */
   theme?: SeasonTheme;
@@ -371,8 +371,8 @@ export type SeasonIntensity = 'low' | 'normal' | 'high';
  * @remarks
  * Passing `theme: true` in {@link SeasonFeatures} turns on every part. Passing an
  * object turns on only the parts set to `true` (or to a selector string).
- * The `season-*` component classes (`season-btn`, `season-card`, ...) and the
- * `--season-*` tokens are always included when the theme is on, because they only
+ * The `season-*` component classes (`seasonfx-btn`, `seasonfx-card`, ...) and the
+ * `--seasonfx-*` tokens are always included when the theme is on, because they only
  * affect elements that opt in.
  */
 export interface SeasonThemeOptions {
@@ -381,7 +381,7 @@ export interface SeasonThemeOptions {
   /**
    * Seasonal look for buttons. `true` uses {@link DEFAULT_THEME_BUTTONS}; a string is
    * a custom CSS selector (e.g. `'.btn-primary'`). Elements with
-   * `data-season-ignore` are never styled.
+   * `data-seasonfx-ignore` are never styled.
    */
   buttons?: boolean | string;
   /** Seasonal underline color for links that are already underlined. */
@@ -439,7 +439,7 @@ export interface SeasonFeatures {
    */
   ambient?: boolean;
   /**
-   * Decorations on elements marked with `data-season-decor`.
+   * Decorations on elements marked with `data-seasonfx-decor`.
    * @defaultValue false
    */
   decorations?: boolean;

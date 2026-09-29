@@ -2,7 +2,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { SeasonController } from '../src/core/SeasonController';
 
-const themeStyle = () => document.head.querySelector('style[data-season-ui-theme]');
+const themeStyle = () => document.head.querySelector('style[data-seasonfx-style]');
 const christmasEve = new Date(2026, 11, 24);
 
 let controller: SeasonController | null = null;
@@ -16,7 +16,7 @@ beforeEach(() => {
   HTMLCanvasElement.prototype.getContext = (() => null) as typeof HTMLCanvasElement.prototype.getContext;
   localStorage.clear();
   document.head.innerHTML = '';
-  document.documentElement.removeAttribute('data-season-theme');
+  document.documentElement.removeAttribute('data-seasonfx-theme');
 });
 
 afterEach(() => {
@@ -35,16 +35,16 @@ describe('SeasonController', () => {
     const c = create({ defaultEnabled: true, date: christmasEve, features: { theme: true } });
     c.start();
     expect(themeStyle()).not.toBeNull();
-    expect(document.documentElement.getAttribute('data-season-theme')).toBe('christmas');
+    expect(document.documentElement.getAttribute('data-seasonfx-theme')).toBe('christmas');
 
     c.setEnabled(false);
     expect(themeStyle()).toBeNull();
-    expect(document.documentElement.hasAttribute('data-season-theme')).toBe(false);
-    expect(localStorage.getItem('season-ui:enabled')).toBe('0');
+    expect(document.documentElement.hasAttribute('data-seasonfx-theme')).toBe(false);
+    expect(localStorage.getItem('seasonfx:enabled')).toBe('0');
   });
 
   it('reads the stored choice on start', () => {
-    localStorage.setItem('season-ui:enabled', '1');
+    localStorage.setItem('seasonfx:enabled', '1');
     const c = create({ defaultEnabled: false, date: christmasEve, features: { theme: true } });
     c.start();
     expect(c.getState().enabled).toBe(true);
@@ -57,7 +57,7 @@ describe('SeasonController', () => {
     c.start();
     c.toggle();
     expect(onEnabledChange).toHaveBeenCalledWith(false);
-    expect(localStorage.getItem('season-ui:enabled')).toBeNull();
+    expect(localStorage.getItem('seasonfx:enabled')).toBeNull();
     expect(c.getState().enabled).toBe(true);
     c.update({ enabled: false, onEnabledChange, date: christmasEve });
     expect(c.getState().enabled).toBe(false);
@@ -68,18 +68,18 @@ describe('SeasonController', () => {
     c.start();
     c.setPreferences({ theme: false });
     expect(themeStyle()).toBeNull();
-    expect(JSON.parse(localStorage.getItem('season-ui:preferences')!)).toEqual({ theme: false });
+    expect(JSON.parse(localStorage.getItem('seasonfx:preferences')!)).toEqual({ theme: false });
     expect(c.getState().running.theme).toBe(false);
   });
 
   it('replaces the early head style without leaving duplicates', () => {
     const early = document.createElement('style');
-    early.setAttribute('data-season-ui-early', '');
+    early.setAttribute('data-seasonfx-early', '');
     document.head.appendChild(early);
     const c = create({ defaultEnabled: true, date: christmasEve, features: { theme: true } });
     c.start();
-    expect(document.head.querySelectorAll('style[data-season-ui-early]')).toHaveLength(0);
-    expect(document.head.querySelectorAll('style[data-season-ui-theme]')).toHaveLength(1);
+    expect(document.head.querySelectorAll('style[data-seasonfx-early]')).toHaveLength(0);
+    expect(document.head.querySelectorAll('style[data-seasonfx-style]')).toHaveLength(1);
   });
 
   it('keeps the state object stable when nothing changes', () => {
@@ -100,7 +100,7 @@ describe('SeasonController', () => {
     button.click();
     expect(c.getState().enabled).toBe(true);
     expect(button.getAttribute('aria-checked')).toBe('true');
-    expect(button.hasAttribute('data-season-ignore')).toBe(true);
+    expect(button.hasAttribute('data-seasonfx-ignore')).toBe(true);
     unbind();
     button.remove();
   });
@@ -110,7 +110,7 @@ describe('SeasonController', () => {
     c.start();
     c.stop();
     expect(themeStyle()).toBeNull();
-    expect(document.documentElement.hasAttribute('data-season')).toBe(false);
-    expect(document.documentElement.hasAttribute('data-season-theme')).toBe(false);
+    expect(document.documentElement.hasAttribute('data-seasonfx')).toBe(false);
+    expect(document.documentElement.hasAttribute('data-seasonfx-theme')).toBe(false);
   });
 });

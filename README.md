@@ -1,9 +1,9 @@
-# SeasonUI
+# SeasonFX
 
 Non-invasive, **opt-in** seasonal (holiday) effects and page themes for React sites.
 
 During a season (Christmas, New Year, Valentine's Day, Easter, Halloween, or your own),
-SeasonUI can add click and hover particles, a background effect (snowfall, falling leaves,
+SeasonFX can add click and hover particles, a background effect (snowfall, falling leaves,
 rising hearts), decorations on elements (a Santa hat on the logo, a spider web on a card),
 hidden surprises, and a full seasonal page theme with custom button looks. It only does so
 **if the developer enables the feature and the user turns it on**.
@@ -18,7 +18,7 @@ hidden surprises, and a full seasonal page theme with custom button looks. It on
 - **Zero cost** when off or out of season: no canvas, no listeners, no styles.
 - **Light and dark:** every theme has dark tokens that follow your site's dark mode.
 - **No flash:** the theme is applied before the first paint, also with server rendering.
-- **React or not:** a React API, and a script-tag build (`window.SeasonUI`) for any site.
+- **React or not:** a React API, and a script-tag build (`window.SeasonFX`) for any site.
 - Respects `prefers-reduced-motion`, works with SSR / Next.js (`"use client"`), ships
   TypeScript types with full TSDoc, and has no dependencies besides `react`.
 
@@ -62,7 +62,7 @@ npm install github:MrDrakosss/SeasonUI
 Requires `react >= 17`.
 
 ```ts
-import { SeasonProvider, SeasonSettings, SeasonButton, useSeason } from 'season-ui';
+import { SeasonProvider, SeasonSettings, SeasonButton, useSeason } from 'seasonfx';
 ```
 
 Not using React? See [16](#16-without-react-script-tag) for the script-tag build.
@@ -75,7 +75,7 @@ Not using React? See [16](#16-without-react-script-tag) for the script-tag build
 to offer:
 
 ```tsx
-import { SeasonProvider } from 'season-ui';
+import { SeasonProvider } from 'seasonfx';
 
 export function Root() {
   return (
@@ -92,7 +92,7 @@ export function Root() {
 **Step 2:** give users a place to turn it on, e.g. the settings page:
 
 ```tsx
-import { SeasonSettings } from 'season-ui';
+import { SeasonSettings } from 'seasonfx';
 
 <SeasonSettings />
 ```
@@ -103,7 +103,7 @@ feature you enabled. If you only want the on/off switch, use `<SeasonButton />` 
 **Step 3 (optional):** mark elements that should wear decorations:
 
 ```tsx
-<a className="logo" data-season-decor="hat">Acme</a>
+<a className="logo" data-seasonfx-decor="hat">Acme</a>
 ```
 
 That is all. Existing buttons and styles stay unchanged until a season is active and the
@@ -142,7 +142,7 @@ The season is picked from the **local date** and re-evaluated automatically at m
 | `clicks` | on | Particle burst when a button is clicked | No, canvas layer only |
 | `hover` | off | Small burst when the mouse enters a button | No, canvas layer only |
 | `ambient` | off | Always-running background effect: snowfall, leaves, hearts, petals, glitter | No, canvas layer only |
-| `decorations` | off | Hats, edges and corner pieces on elements with `data-season-decor` | No, canvas layer only |
+| `decorations` | off | Hats, edges and corner pieces on elements with `data-seasonfx-decor` | No, canvas layer only |
 | `easterEggs` | off | Hidden surprises: click frenzy, Konami code, secret word, rare fly-bys | No, canvas layer only |
 | `theme` | off | Seasonal page theme, button skins, design tokens and component classes | Yes, a `<style>` tag while active |
 
@@ -157,8 +157,8 @@ or by your app (controlled):
 
 | State | Uncontrolled props | Controlled props | Storage key (uncontrolled) |
 |---|---|---|---|
-| Master switch (`boolean`) | `defaultEnabled` | `enabled` + `onEnabledChange` | `season-ui:enabled` (`"1"` / `"0"`) |
-| Preferences (`SeasonPreferences`) | `defaultPreferences` | `preferences` + `onPreferencesChange` | `season-ui:preferences` (JSON) |
+| Master switch (`boolean`) | `defaultEnabled` | `enabled` + `onEnabledChange` | `seasonfx:enabled` (`"1"` / `"0"`) |
+| Preferences (`SeasonPreferences`) | `defaultPreferences` | `preferences` + `onPreferencesChange` | `seasonfx:preferences` (JSON) |
 
 `SeasonPreferences`:
 
@@ -225,7 +225,7 @@ and one checkbox per feature that the developer enabled.
   `easterEggs`, `theme`). Defaults are in `DEFAULT_SETTINGS_LABELS`.
 - `unstyled` removes every inline style. Style it through `data-part` attributes:
   `title`, `row`, `label`, `status`, `segmented`, `option` (with `data-selected`), `checkbox`.
-- The panel carries `data-season-ignore`, so it is never themed and clicks in it do not
+- The panel carries `data-seasonfx-ignore`, so it is never themed and clicks in it do not
   trigger effects.
 - Other props (`className`, `style`, `id`, ...) go to the root `<div>`.
 
@@ -265,9 +265,9 @@ The rendered element automatically gets:
 | Attribute / behavior | Why |
 |---|---|
 | `role="switch"`, `aria-checked` | accessibility |
-| `data-season-enabled="true"` or `"false"` | your own CSS, e.g. `.pill[data-season-enabled="true"] { ... }` |
-| `data-season="<id>"` (when a season is active) | per-season CSS |
-| `data-season-ignore` | not themed, and clicking it does not trigger the global effect |
+| `data-seasonfx-enabled="true"` or `"false"` | your own CSS, e.g. `.pill[data-seasonfx-enabled="true"] { ... }` |
+| `data-seasonfx="<id>"` (when a season is active) | per-season CSS |
+| `data-seasonfx-ignore` | not themed, and clicking it does not trigger the global effect |
 | `type="button"` (when `<button>`) | never submits a surrounding form |
 | `tabIndex=0` + Enter/Space (for non-button HTML elements such as `div`) | keyboard support |
 | `ref` forwarding | the `ref` points to the rendered element |
@@ -281,7 +281,7 @@ The rendered element automatically gets:
 
 ```tsx
 const { enabled, setEnabled } = useSeason();
-<Switch checked={enabled} onCheckedChange={setEnabled} data-season-ignore />
+<Switch checked={enabled} onCheckedChange={setEnabled} data-seasonfx-ignore />
 ```
 
 ---
@@ -348,15 +348,15 @@ The check is `event.target.closest(selector)`, so clicking an icon inside a butt
 ```tsx
 <SeasonProvider selector={`${DEFAULT_SELECTOR}, a`}>   // include links
 <SeasonProvider selector="*">                          // every click
-<SeasonProvider selector="[data-season-effect]">       // only marked elements
+<SeasonProvider selector="[data-seasonfx-effect]">       // only marked elements
 ```
 
-**Exclusion:** elements with `data-season-ignore` **and all their descendants** never
+**Exclusion:** elements with `data-seasonfx-ignore` **and all their descendants** never
 trigger effects and are never themed:
 
 ```tsx
-<button data-season-ignore>Delete</button>
-<nav data-season-ignore>...the whole navbar is excluded...</nav>
+<button data-seasonfx-ignore>Delete</button>
+<nav data-seasonfx-ignore>...the whole navbar is excluded...</nav>
 ```
 
 - Disabled buttons fire no `click` event, so no effect.
@@ -377,7 +377,7 @@ Density scales with the viewport width and the user's intensity.
 
 ## 11. Decorations
 
-Feature `decorations`. Mark any element with `data-season-decor`; the decoration is drawn
+Feature `decorations`. Mark any element with `data-seasonfx-decor`; the decoration is drawn
 on the canvas layer at the element's position, so the element itself is not modified.
 
 | Value | Position | Christmas | Halloween | Valentine's Day | Easter | New Year |
@@ -387,10 +387,10 @@ on the canvas layer at the element's position, so the element itself is not modi
 | `corner` | top-right corner | holly | spider web with spider | heart with arrow | egg | starburst |
 
 ```tsx
-<a className="logo" data-season-decor="hat">Acme</a>
-<header data-season-decor="edge">...</header>
-<article className="card" data-season-decor="corner">...</article>
-<div data-season-decor="hat corner">...</div>   // several at once
+<a className="logo" data-seasonfx-decor="hat">Acme</a>
+<header data-seasonfx-decor="edge">...</header>
+<article className="card" data-seasonfx-decor="corner">...</article>
+<div data-seasonfx-decor="hat corner">...</div>   // several at once
 ```
 
 - Elements added later are picked up automatically (MutationObserver).
@@ -421,8 +421,8 @@ Day), rolling eggs (Easter), a bat swarm (Halloween).
 
 ## 13. Page theme
 
-Feature `theme`. While active, a `<style data-season-ui-theme>` tag is added to `<head>` and
-`data-season-theme="<id>"` to `<html>`. Every rule is scoped to that attribute, so turning
+Feature `theme`. While active, a `<style data-seasonfx-style>` tag is added to `<head>` and
+`data-seasonfx-theme="<id>"` to `<html>`. Every rule is scoped to that attribute, so turning
 the feature off removes everything.
 
 ```tsx
@@ -463,23 +463,23 @@ with your regular classes:
 
 | Class | Effect while active |
 |---|---|
-| `season-btn` | the season's button skin (even if the `buttons` part is off) |
-| `season-btn-soft` | tinted, low-emphasis button |
-| `season-btn-outline` | outlined button that fills on hover |
-| `season-card` | accent line on top, seasonal border and glow |
-| `season-surface` | seasonal surface background and text color |
-| `season-badge` | tinted pill label |
-| `season-text` | gradient text |
-| `season-banner` | gradient and pattern background with white text |
-| `season-ring` | glowing seasonal ring |
-| `season-divider` | gradient border color |
-| `season-accent` | text in the season's primary color |
-| `season-hide` | hidden while the theme is active |
+| `seasonfx-btn` | the season's button skin (even if the `buttons` part is off) |
+| `seasonfx-btn-soft` | tinted, low-emphasis button |
+| `seasonfx-btn-outline` | outlined button that fills on hover |
+| `seasonfx-card` | accent line on top, seasonal border and glow |
+| `seasonfx-surface` | seasonal surface background and text color |
+| `seasonfx-badge` | tinted pill label |
+| `seasonfx-text` | gradient text |
+| `seasonfx-banner` | gradient and pattern background with white text |
+| `seasonfx-ring` | glowing seasonal ring |
+| `seasonfx-divider` | gradient border color |
+| `seasonfx-accent` | text in the season's primary color |
+| `seasonfx-hide` | hidden while the theme is active |
 
 ```tsx
-<button className="btn season-btn">Buy now</button>
-<h1>Welcome to <span className="season-text">Acme</span></h1>
-<div className="promo season-banner">Holiday sale</div>
+<button className="btn seasonfx-btn">Buy now</button>
+<h1>Welcome to <span className="seasonfx-text">Acme</span></h1>
+<div className="promo seasonfx-banner">Holiday sale</div>
 ```
 
 ### Design tokens
@@ -488,16 +488,16 @@ While active, these CSS custom properties are defined on `<html>` and can be use
 own CSS:
 
 ```
---season-primary     --season-secondary    --season-on-primary
---season-button-bg   --season-button-ring  --season-glow
---season-ring        --season-surface      --season-on-surface
---season-border      --season-gradient     --season-radius
---season-pattern
+--seasonfx-primary     --seasonfx-secondary    --seasonfx-on-primary
+--seasonfx-button-bg   --seasonfx-button-ring  --seasonfx-glow
+--seasonfx-ring        --seasonfx-surface      --seasonfx-on-surface
+--seasonfx-border      --seasonfx-gradient     --seasonfx-radius
+--seasonfx-pattern
 ```
 
 ```css
-.hero-title { color: var(--season-primary, inherit); }
-html[data-season-theme="halloween"] .logo { filter: drop-shadow(0 0 6px var(--season-glow)); }
+.hero-title { color: var(--seasonfx-primary, inherit); }
+html[data-seasonfx-theme="halloween"] .logo { filter: drop-shadow(0 0 6px var(--seasonfx-glow)); }
 ```
 
 ### Dark mode
@@ -526,10 +526,10 @@ Custom seasons add a `dark` object to their `theme` with the tokens that differ 
 
 ### Specificity
 
-Theme rules use `html[data-season-theme="..."]` plus attribute checks, which beats single
+Theme rules use `html[data-seasonfx-theme="..."]` plus attribute checks, which beats single
 class selectors (including utility classes such as Tailwind's `bg-blue-500`). Inline styles
 and `!important` rules on your side still win. Exclude an element (and its children) with
-`data-season-ignore`.
+`data-seasonfx-ignore`.
 
 ---
 
@@ -552,7 +552,7 @@ nothing (e.g. no `ambient` means no background effect for that season). Without 
 theme is generated from `accent`.
 
 ```tsx
-import { SeasonProvider, builtInSeasons, dateRange, decorations, svgUrl, type SeasonDefinition } from 'season-ui';
+import { SeasonProvider, builtInSeasons, dateRange, decorations, svgUrl, type SeasonDefinition } from 'seasonfx';
 
 const stPatricks: SeasonDefinition = {
   id: 'st-patricks',
@@ -597,7 +597,7 @@ const stPatricks: SeasonDefinition = {
 
 | Field | Type | Required | Meaning |
 |---|---|---|---|
-| `id` | `string` | yes | unique id, used in `data-season*` attributes |
+| `id` | `string` | yes | unique id, used in `data-seasonfx*` attributes |
 | `name` | `string` | yes | display name |
 | `isActive` | `(date: Date) => boolean` | yes | when the season is active |
 | `particles` | `ParticleConfig` | yes | click burst |
@@ -641,7 +641,7 @@ Built-in shapes: `snowflake`, `star`, `heart`, `confetti`, `spark`, `pumpkin`, `
 ### Custom shapes and decorations
 
 ```ts
-import type { DecorationDrawer, ShapeDrawer } from 'season-ui';
+import type { DecorationDrawer, ShapeDrawer } from 'seasonfx';
 
 // drawn around the origin; the engine handles position, rotation and opacity
 const diamond: ShapeDrawer = (ctx, size, color) => {
@@ -675,14 +675,14 @@ as the Provider:
 
 ```tsx
 // season-config.ts: one shared object
-import type { SeasonOptions } from 'season-ui';
+import type { SeasonOptions } from 'seasonfx';
 export const seasonConfig: SeasonOptions = {
   defaultEnabled: false,
   features: { ambient: true, decorations: true, theme: { buttons: true, background: true, darkSelector: '.dark' } },
 };
 
 // app/layout.tsx (Next.js App Router)
-import { SeasonScript } from 'season-ui';
+import { SeasonScript } from 'seasonfx';
 import { seasonConfig } from './season-config';
 
 <html lang="en" suppressHydrationWarning>
@@ -699,7 +699,7 @@ import { seasonConfig } from './season-config';
   5 to 8 KB each; pass a shorter `seasons` list to reduce it). It renders nothing when the
   `theme` feature is off.
 - It reads the same `localStorage` keys, evaluates the season in the visitor's local time,
-  and sets `data-season-theme` on `<html>`. The Provider takes over on start.
+  and sets `data-seasonfx-theme` on `<html>`. The Provider takes over on start.
 - `suppressHydrationWarning` on `<html>` is needed because the attribute is set before React
   hydrates.
 - In controlled mode, pass the user's saved values (`enabled`, `preferences`) from the
@@ -715,15 +715,15 @@ import { seasonConfig } from './season-config';
 
 ## 16. Without React (script tag)
 
-The package also ships a React-free build that exposes `window.SeasonUI`, for plain HTML,
+The package also ships a React-free build that exposes `window.SeasonFX`, for plain HTML,
 WordPress, PHP templates and other stacks. It contains the same engine, seasons and theme
 (about 49 KB minified).
 
 ```html
 <head>
-  <script src="https://unpkg.com/season-ui/dist/season-ui.global.js"></script>
+  <script src="https://unpkg.com/seasonfx/dist/seasonfx.global.js"></script>
   <script>
-    const season = SeasonUI.init({
+    const season = SeasonFX.init({
       defaultEnabled: false,
       features: { hover: true, ambient: true, decorations: true, theme: { buttons: true, background: true } },
     });
@@ -737,9 +737,9 @@ WordPress, PHP templates and other stacks. It contains the same engine, seasons 
 </body>
 ```
 
-Until the package is on npm, copy `dist/season-ui.global.js` from a build (`npm run build`)
+Until the package is on npm, copy `dist/seasonfx.global.js` from a build (`npm run build`)
 to your site and load it from there. With a bundler, import it as
-`import * as SeasonUI from 'season-ui/global'`.
+`import * as SeasonFX from 'seasonfx/global'`.
 
 - Include it in `<head>` without `defer` and call `init()` right away: the theme is applied
   before the first paint, and canvas effects start as soon as `<body>` exists.
@@ -754,11 +754,11 @@ to your site and load it from there. With a bundler, import it as
 | `getOptions()` | the current options |
 | `getState()` | `{ season, enabled, active, reducedMotion, features, preferences, running }` |
 | `subscribe(fn)` | called after every state change; returns an unsubscribe function |
-| `bindToggle(element)` | turns any element (or checkbox) into the master toggle, keeps `aria-checked` and `data-season-enabled` in sync |
+| `bindToggle(element)` | turns any element (or checkbox) into the master toggle, keeps `aria-checked` and `data-seasonfx-enabled` in sync |
 | `burst(x, y)`, `burstAt(el)`, `celebrate(target?)` | manual effects |
 | `stop()`, `start()` | detach everything / attach again |
 
-The `window.SeasonUI` object also has `builtInSeasons`, the individual seasons,
+The `window.SeasonFX` object also has `builtInSeasons`, the individual seasons,
 `dateRange`, `easterRange`, `svgUrl`, `shapes`, `decorations`, `ParticleEngine` and
 `SeasonController`, so custom seasons work the same way as in React.
 
@@ -781,14 +781,14 @@ The `window.SeasonUI` object also has `builtInSeasons`, the individual seasons,
 | `preferences` | `Partial<SeasonPreferences>` | | user preferences, controlled |
 | `defaultPreferences` | `Partial<SeasonPreferences>` | `DEFAULT_PREFERENCES` | user preferences, uncontrolled defaults |
 | `onPreferencesChange` | `(p: SeasonPreferences) => void` | | preferences changed |
-| `storageKey` | `string` or `false` | `'season-ui'` | localStorage key prefix; `false` = no saving |
+| `storageKey` | `string` or `false` | `'seasonfx'` | localStorage key prefix; `false` = no saving |
 | `seasons` | `SeasonDefinition[]` | `builtInSeasons` | candidate seasons, in priority order |
 | `season` | `string`, `SeasonDefinition` or `null` | | forced season (id or object); `null` = none |
 | `date` | `Date` | now | overrides the date (for testing) |
 | `selector` | `string` | `DEFAULT_SELECTOR` | which elements trigger click and hover effects |
 | `respectReducedMotion` | `boolean` | `true` | no moving effects with `prefers-reduced-motion` |
 | `zIndex` | `number` | `2147483000` | z-index of the canvas layer |
-| `exposeAttribute` | `boolean` | `false` | sets `data-season="<id>"` on `<html>` while active |
+| `exposeAttribute` | `boolean` | `false` | sets `data-seasonfx="<id>"` on `<html>` while active |
 
 ### `<SeasonButton>` props
 
@@ -831,7 +831,7 @@ plus:
 
 ### `SeasonController`
 
-The framework-agnostic core used by the Provider and by `SeasonUI.init()`. See
+The framework-agnostic core used by the Provider and by `SeasonFX.init()`. See
 [16](#16-without-react-script-tag) for its methods. `new SeasonController(options)` has no side
 effects; call `start()` in the browser.
 
@@ -900,14 +900,14 @@ The bundle starts with `"use client"`. Put the Provider in a client component, a
 ```tsx
 // app/providers.tsx
 'use client';
-import { SeasonProvider } from 'season-ui';
+import { SeasonProvider } from 'seasonfx';
 import { seasonConfig } from './season-config';
 export function Providers({ children }: { children: React.ReactNode }) {
   return <SeasonProvider {...seasonConfig}>{children}</SeasonProvider>;
 }
 
 // app/layout.tsx
-import { SeasonScript } from 'season-ui';
+import { SeasonScript } from 'seasonfx';
 import { Providers } from './providers';
 import { seasonConfig } from './season-config';
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -943,14 +943,14 @@ See [16](#16-without-react-script-tag).
 **Guarantees:**
 - Without the theme feature, no CSS is added. With it, all CSS lives in one `<style>` tag
   that exists only while the theme runs, and every rule is scoped to
-  `html[data-season-theme]`.
+  `html[data-seasonfx-theme]`.
 - The theme never changes sizes, spacing, fonts, display or position.
 - Existing elements are never modified: no class, style or DOM changes. `SeasonProvider`
   renders no DOM element of its own.
 - Listeners never call `preventDefault` or `stopPropagation`.
-- The only other DOM addition is one `<canvas data-season-ui-canvas aria-hidden="true">` at
+- The only other DOM addition is one `<canvas data-seasonfx-canvas aria-hidden="true">` at
   the end of `body`, while active and only once something needs to be drawn. Optionally
-  `data-season` on `<html>` with `exposeAttribute`.
+  `data-seasonfx` on `<html>` with `exposeAttribute`.
 - When nothing moves, the animation loop stops (0% CPU). At most 600 particles are alive at once.
 - Every text field is safe: secret words are ignored while typing in inputs, textareas,
   selects and contenteditable elements.
@@ -972,11 +972,11 @@ See [16](#16-without-react-script-tag).
 
 | Symptom | Cause / fix |
 |---|---|
-| Error `useSeason() and the season-ui components must be used inside <SeasonProvider>` | The component is not under the Provider. Move the Provider higher. |
+| Error `useSeason() and the seasonfx components must be used inside <SeasonProvider>` | The component is not under the Provider. Move the Provider higher. |
 | Nothing happens | 1) Is there a season today? Test with `season="christmas"`. 2) Is the master switch on (`useSeason().enabled`)? 3) Is the feature in `features`? 4) Did the user turn it off (`preferences`)? 5) Is reduced motion on in the OS? Check `useSeason().running`. |
-| No effect on a specific button | It does not match `selector`, or it or an ancestor has `data-season-ignore`. |
-| The theme does not restyle a button | The button has an inline style or an `!important` rule, or it is outside the `buttons` selector. Add `season-btn` to it. |
-| The theme restyles something it should not | Add `data-season-ignore` to it (or a container), or narrow `theme.buttons` to a selector. |
+| No effect on a specific button | It does not match `selector`, or it or an ancestor has `data-seasonfx-ignore`. |
+| The theme does not restyle a button | The button has an inline style or an `!important` rule, or it is outside the `buttons` selector. Add `seasonfx-btn` to it. |
+| The theme restyles something it should not | Add `data-seasonfx-ignore` to it (or a container), or narrow `theme.buttons` to a selector. |
 | No decoration | The `decorations` feature is off, the attribute value is not `hat`, `edge` or `corner`, or the element is covered by another element. |
 | The toggle does not change (controlled mode) | `onEnabledChange` must update the value you pass to `enabled`. |
 | Effects hidden under an overlay | Increase `zIndex`. |
@@ -987,10 +987,10 @@ See [16](#16-without-react-script-tag).
 
 ```bash
 npm install
-npm run dev        # demo: http://localhost:5173, a bakery website with SeasonUI built in
+npm run dev        # demo: http://localhost:5173, a bakery website with SeasonFX built in
 npm test           # unit tests (dates, theme, early script, controller) and the ASCII-only check
 npm run typecheck
-npm run build      # dist/: ESM + CJS + .d.ts, and season-ui.global.js (script-tag build)
+npm run build      # dist/: ESM + CJS + .d.ts, and seasonfx.global.js (script-tag build)
 npm run docs       # Javadoc-like HTML API docs in docs/ (TypeDoc)
 ```
 
@@ -999,7 +999,7 @@ Source layout:
 ```
 src/
   index.ts                  public exports (React)
-  global.ts                 script-tag build entry (window.SeasonUI, no React)
+  global.ts                 script-tag build entry (window.SeasonFX, no React)
   core/SeasonController.ts  framework-agnostic core: state, storage, features, listeners, theme
   core/constants.ts         defaults
   SeasonProvider.tsx        React wrapper around SeasonController
@@ -1032,7 +1032,7 @@ If you receive this README in another project, do this:
 2. **Provider:** find the app root (`main.tsx`, `App.tsx`, `_app.tsx`, or a `'use client'`
    providers file in the Next.js App Router) and wrap it **once** in `<SeasonProvider>`.
    Keep the options in one shared `seasonConfig` object.
-   - **No React?** Use the script-tag build instead: `SeasonUI.init(seasonConfig)` in `<head>`
+   - **No React?** Use the script-tag build instead: `SeasonFX.init(seasonConfig)` in `<head>`
      and `season.bindToggle(element)` for the toggle (see section 16), then continue from step 6.
 3. **Features:** ask or decide which features to offer and pass them in `features`
    (`clicks` is on by default; `hover`, `ambient`, `decorations`, `easterEggs`, `theme` are
@@ -1051,12 +1051,12 @@ If you receive this README in another project, do this:
 5. **Settings UI:** put `<SeasonSettings />` on the settings page (translate with `labels`,
    restyle with `unstyled` + `data-part`), or build a custom one with `useSeason()`.
    For a quick on/off switch elsewhere, use `<SeasonButton />` (navbar: `hideWhenInactive`).
-   For a UI library switch, use `useSeason()` and add `data-season-ignore` to it.
-6. **Decorations (if enabled):** add `data-season-decor="hat"` to the logo, `"edge"` to the
+   For a UI library switch, use `useSeason()` and add `data-seasonfx-ignore` to it.
+6. **Decorations (if enabled):** add `data-seasonfx-decor="hat"` to the logo, `"edge"` to the
    header, `"corner"` to one or two cards. Do not add it to many elements.
-7. **Theme (if enabled):** optionally add `season-btn` to the main call-to-action,
-   `season-text` to a headline word, `season-card` to feature cards. Add
-   `data-season-ignore` to areas that must never change (e.g. payment forms, brand logos
+7. **Theme (if enabled):** optionally add `seasonfx-btn` to the main call-to-action,
+   `seasonfx-text` to a headline word, `seasonfx-card` to feature cards. Add
+   `data-seasonfx-ignore` to areas that must never change (e.g. payment forms, brand logos
    with fixed colors).
 8. **Do not modify existing buttons** for click effects, do not add global CSS for the
    module, and do not replace buttons with `SeasonButton` (it is only the on/off toggle).

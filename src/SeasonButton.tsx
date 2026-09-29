@@ -134,8 +134,8 @@ function thumbStyle(enabled: boolean): CSSProperties {
  *
  * In every mode the rendered element receives:
  * - `role="switch"` and `aria-checked`, for accessibility;
- * - `data-season-enabled="true|false"` (for your CSS) and `data-season="<id>"` when a season is active;
- * - `data-season-ignore`, so clicking the toggle does not trigger the global effect
+ * - `data-seasonfx-enabled="true|false"` (for your CSS) and `data-seasonfx="<id>"` when a season is active;
+ * - `data-seasonfx-ignore`, so clicking the toggle does not trigger the global effect
  *   (turning it on does start a small burst from the toggle as feedback);
  * - `type="button"` when it is a `<button>` (it never submits a form by accident);
  * - `tabIndex=0` and Enter/Space handling for non-button HTML elements (e.g. `div`).
@@ -217,9 +217,9 @@ export const SeasonButton = forwardRef(function SeasonButton(
   const elementProps: Record<string, unknown> = {
     role: 'switch',
     'aria-checked': enabled,
-    'data-season-ignore': '',
-    'data-season-enabled': enabled ? 'true' : 'false',
-    'data-season': season?.id,
+    'data-seasonfx-ignore': '',
+    'data-seasonfx-enabled': enabled ? 'true' : 'false',
+    'data-seasonfx': season?.id,
     ...(isNativeButton ? { type: 'button' } : null),
     ...(isPlainElement ? { tabIndex: 0 } : null),
     ...(useDefaultLook ? { 'aria-label': 'Seasonal effects' } : null),

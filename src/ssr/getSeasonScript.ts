@@ -52,8 +52,8 @@ return null}
 var id=c.f;
 if(c.a){id=null;var now=c.t?new Date(c.t):new Date();for(var j=0;j<c.s.length;j++){var m=match(c.s[j],now);if(m===null)return;if(m){id=c.s[j].id;break}}}
 if(!id||!c.c[id])return;
-st=document.createElement('style');st.setAttribute('data-season-ui-early','');st.textContent=c.c[id];
-(document.head||d).appendChild(st);d.setAttribute('data-season-theme',id);
+st=document.createElement('style');st.setAttribute('data-seasonfx-early','');st.textContent=c.c[id];
+(document.head||d).appendChild(st);d.setAttribute('data-seasonfx-theme',id);
 }catch(e){}}`;
 
 function rangeOf(season: SeasonDefinition): { r?: [number, number]; x?: [number, number]; n?: 1 } {

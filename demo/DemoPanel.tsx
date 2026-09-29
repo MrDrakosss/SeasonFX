@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { SeasonIcon, builtInSeasons, useSeason } from 'season-ui';
+import { SeasonIcon, builtInSeasons, useSeason } from 'seasonfx';
 
-/** Testing controls. Not part of the bakery site; marked with data-season-ignore so it is never themed. */
+/** Testing controls. Not part of the bakery site; marked with data-seasonfx-ignore so it is never themed. */
 export function DemoPanel(props: {
   forced: string;
   setForced: (id: string) => void;
@@ -20,16 +20,16 @@ export function DemoPanel(props: {
 
   if (!open) {
     return (
-      <button className="demo-fab" data-season-ignore onClick={() => setOpen(true)}>
-        SeasonUI demo
+      <button className="demo-fab" data-seasonfx-ignore onClick={() => setOpen(true)}>
+        SeasonFX demo
       </button>
     );
   }
 
   return (
-    <aside className="demo-panel" data-season-ignore aria-label="SeasonUI demo controls">
+    <aside className="demo-panel" data-seasonfx-ignore aria-label="SeasonFX demo controls">
       <div className="demo-head">
-        <strong>SeasonUI demo</strong>
+        <strong>SeasonFX demo</strong>
         <button className="demo-link" onClick={() => setOpen(false)}>
           Hide
         </button>
@@ -75,7 +75,7 @@ export function DemoPanel(props: {
       </label>
       {!themeButtons && (
         <p className="demo-note">
-          Plain buttons keep the bakery style. Buttons that opt in with a season-btn class still get the skin.
+          Plain buttons keep the bakery style. Buttons that opt in with a seasonfx-btn class still get the skin.
         </p>
       )}
 

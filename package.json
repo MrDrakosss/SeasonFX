@@ -1,5 +1,5 @@
 {
-  "name": "season-ui",
+  "name": "seasonfx",
   "version": "0.1.0",
   "description": "Non-invasive, opt-in seasonal (holiday) effects and page themes for React sites.",
   "license": "MIT",
@@ -20,14 +20,14 @@
   "main": "./dist/index.cjs",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "unpkg": "./dist/season-ui.global.js",
-  "jsdelivr": "./dist/season-ui.global.js",
+  "unpkg": "./dist/seasonfx.global.js",
+  "jsdelivr": "./dist/seasonfx.global.js",
   "exports": {
     ".": {
       "import": {
         "types": "./dist/index.d.ts",
-        "unpkg": "./dist/season-ui.global.js",
-        "jsdelivr": "./dist/season-ui.global.js",
+        "unpkg": "./dist/seasonfx.global.js",
+        "jsdelivr": "./dist/seasonfx.global.js",
         "default": "./dist/index.js"
       },
       "require": {
@@ -35,7 +35,7 @@
         "default": "./dist/index.cjs"
       }
     },
-    "./global": "./dist/season-ui.global.js"
+    "./global": "./dist/seasonfx.global.js"
   },
   "files": [
     "dist"

@@ -84,14 +84,14 @@ export const halloween: SeasonDefinition = {
     pattern: `radial-gradient(1100px 520px at 50% -160px, rgba(124, 58, 237, 0.12), rgba(124, 58, 237, 0) 70%), ${pattern}`,
     buttonHoverExtra: 'text-shadow: 0 0 10px rgba(251, 146, 60, 0.9);',
     css: `
-@keyframes season-ui-flicker {
+@keyframes seasonfx-flicker {
   0%, 100% { filter: brightness(1.05); }
   45% { filter: brightness(1.25); }
   50% { filter: brightness(0.9); }
   55% { filter: brightness(1.2); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  {button}:not(:disabled):hover { animation: season-ui-flicker 1.8s ease-in-out infinite; }
+  {button}:not(:disabled):hover { animation: seasonfx-flicker 1.8s ease-in-out infinite; }
 }`,
   },
 };
