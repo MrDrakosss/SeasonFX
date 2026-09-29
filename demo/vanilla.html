@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SeasonUI without React</title>
+    <style>
+      * { box-sizing: border-box; }
+      body { margin: 0; font-family: system-ui, sans-serif; background: #fbf8f3; color: #2a2019; line-height: 1.6; }
+      main { max-width: 720px; margin: 0 auto; padding: 48px 20px; }
+      h1 { font-size: 40px; margin: 0 0 8px; }
+      p { color: #7a6a5c; }
+      .row { display: flex; flex-wrap: wrap; gap: 10px; margin: 24px 0; }
+      .btn { border: 1px solid transparent; border-radius: 999px; padding: 10px 20px; background: #a4561c; color: #fff; font: 600 15px system-ui, sans-serif; cursor: pointer; }
+      .btn.ghost { background: transparent; color: #2a2019; border-color: #ece2d3; }
+      .card { background: #fff; border: 1px solid #ece2d3; border-radius: 18px; padding: 24px; margin-top: 24px; }
+      .toggle[data-season-enabled="true"] { background: #2a2019; color: #fff; }
+      select { font: inherit; padding: 6px 10px; border-radius: 8px; }
+      code { background: #f5ede2; padding: 1px 6px; border-radius: 4px; }
+    </style>
+    <!--
+      Production: include the script-tag build in <head> (no defer) and call init() right away,
+      so the theme is applied before the first paint:
+
+        <script src="https://unpkg.com/season-ui/dist/season-ui.global.js"></script>
+        <script>
+          const season = SeasonUI.init({ ... });
+        </script>
+
+      This dev page imports the same entry through Vite instead.
+    -->
+    <script type="module">
+      import * as SeasonUI from 'season-ui/global';
+      window.SeasonUI = SeasonUI;
+
+      const season = SeasonUI.init({
+        season: 'christmas',
+        defaultEnabled: true,
+        storageKey: 'season-ui-vanilla',
+        features: { hover: true, ambient: true, decorations: true, easterEggs: true, theme: true },
+      });
+      window.season = season;
+
+      addEventListener('DOMContentLoaded', () => {
+        season.bindToggle(document.getElementById('toggle'));
+        document.getElementById('celebrate').addEventListener('click', (e) => season.celebrate(e.currentTarget));
+        const select = document.getElementById('season');
+        select.innerHTML = SeasonUI.builtInSeasons.map((s) => `<option value="${s.id}">${s.name}</option>`).join('');
+        select.value = 'christmas';
+        select.addEventListener('change', () => {
+          season.setOptions({ season: select.value });
+        });
+        const status = document.getElementById('status');
+        const render = () => {
+          const s = season.getState();
+          status.textContent = `Season: ${s.season ? s.season.name : 'none'}`;
+          document.getElementById('toggle').textContent = `Holiday effects: ${s.enabled ? 'on' : 'off'}`;
+        };
+        season.subscribe(render);
+        render();
+      });
+    </script>
+  </head>
+  <body>
+    <main>
+      <h1 data-season-decor="hat">Plain HTML page</h1>
+      <p>No React here. SeasonUI runs from the script-tag build through <code>SeasonUI.init()</code>.</p>
+
+      <div class="row">
+        <button id="toggle" class="btn ghost toggle">Holiday effects</button>
+        <button id="celebrate" class="btn season-btn">celebrate()</button>
+        <button class="btn">A plain button</button>
+        <select id="season" data-season-ignore aria-label="Season"></select>
+      </div>
+      <p id="status"></p>
+
+      <div class="card season-card" data-season-decor="corner">
+        <h2>Usage</h2>
+        <p>
+          <code>const season = SeasonUI.init(options)</code>, then <code>season.bindToggle(button)</code>,
+          <code>season.toggle()</code>, <code>season.setPreferences({ intensity: 'high' })</code>,
+          <code>season.setOptions({ season: 'halloween' })</code>,
+          <code>season.celebrate()</code>, <code>season.subscribe(fn)</code>.
+        </p>
+      </div>
+      <p><a href="/">Back to the bakery demo</a></p>
+    </main>
+  </body>
+</html>
