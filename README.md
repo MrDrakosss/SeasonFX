@@ -56,7 +56,7 @@ hidden surprises, and a full seasonal page theme with custom button looks. It on
 The package is not on npm (yet). Install it from git; the `prepare` script builds it on install.
 
 ```bash
-npm install github:MrDrakosss/SeasonUI
+npm install github:MrDrakosss/SeasonFX
 ```
 
 Requires `react >= 17`.
@@ -1028,7 +1028,7 @@ Source files must be plain ASCII (no emoji or typographic symbols); `npm test` e
 
 If you receive this README in another project, do this:
 
-1. **Install:** `npm install github:MrDrakosss/SeasonUI`.
+1. **Install:** `npm install github:MrDrakosss/SeasonFX`.
 2. **Provider:** find the app root (`main.tsx`, `App.tsx`, `_app.tsx`, or a `'use client'`
    providers file in the Next.js App Router) and wrap it **once** in `<SeasonProvider>`.
    Keep the options in one shared `seasonConfig` object.
