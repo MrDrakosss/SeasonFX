@@ -35,28 +35,42 @@ export function DemoPanel(props: {
         </button>
       </div>
 
-      <div className="demo-seasons" role="radiogroup" aria-label="Season">
-        <button
-          role="radio"
-          aria-checked={forced === ''}
-          className={forced === '' ? 'active' : ''}
-          onClick={() => setForced('')}
-          title="Pick the season from today's date"
-        >
-          Today
-        </button>
-        {builtInSeasons.map((s) => (
+      <div className="demo-section">
+        <span className="demo-label">Theme</span>
+        <div className="demo-seasons" role="radiogroup" aria-label="Theme">
           <button
-            key={s.id}
             role="radio"
-            aria-checked={forced === s.id}
-            className={forced === s.id ? 'active' : ''}
-            onClick={() => setForced(s.id)}
-            title={s.name}
+            aria-checked={forced === ''}
+            className={forced === '' ? 'active' : ''}
+            onClick={() => setForced('')}
+            title="Pick the season from today's date, like a real site"
           >
-            <SeasonIcon season={s} size={18} />
+            <span className="demo-dot" aria-hidden="true" />
+            Today's date
           </button>
-        ))}
+          <button
+            role="radio"
+            aria-checked={forced === 'none'}
+            className={forced === 'none' ? 'active' : ''}
+            onClick={() => setForced('none')}
+            title="No season: how the site looks out of season"
+          >
+            <span className="demo-dot off" aria-hidden="true" />
+            None
+          </button>
+          {builtInSeasons.map((s) => (
+            <button
+              key={s.id}
+              role="radio"
+              aria-checked={forced === s.id}
+              className={forced === s.id ? 'active' : ''}
+              onClick={() => setForced(s.id)}
+            >
+              <SeasonIcon season={s} size={16} />
+              {s.name}
+            </button>
+          ))}
+        </div>
       </div>
 
       <label className="demo-row">
@@ -82,7 +96,7 @@ export function DemoPanel(props: {
       <div className="demo-status">
         <div>
           <span>Season</span>
-          <b>{season ? season.name : 'none today'}</b>
+          <b>{season ? season.name : 'none'}</b>
         </div>
         <div>
           <span>Running</span>

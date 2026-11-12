@@ -6,6 +6,7 @@ import { DemoPanel } from './DemoPanel';
 
 function Root() {
   // A real site would not force a season; the demo does so that every theme can be tried any day.
+  // '' = pick by today's date, 'none' = no season, otherwise a season id.
   const [forced, setForced] = useState('christmas');
   const [themeButtons, setThemeButtons] = useState(true);
   const [dark, setDark] = useState(false);
@@ -16,7 +17,7 @@ function Root() {
   }, [dark]);
   return (
     <SeasonProvider
-      season={forced || undefined}
+      season={forced === '' ? undefined : forced === 'none' ? null : forced}
       defaultEnabled
       features={{
         hover: true,
